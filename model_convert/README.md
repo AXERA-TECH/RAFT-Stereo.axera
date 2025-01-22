@@ -78,7 +78,7 @@ bash download_dataset.sh
 
 
 ```
-pulsar2 build --input ../models/raft_steoro384x1280_r4.onnx --config config.json --output_dir build-output-r4 --output_name raft_steoro384x1280_r4.axmodel --target_hardware AX650 --compiler.check 0
+pulsar2 build --input ../models/raft_steoro384x1280_r4.onnx --config config_r1.json --output_dir build-output-r4 --output_name raft_steoro384x1280_r4.axmodel --target_hardware AX650 --compiler.check 0
 ```
 或
 

@@ -24,34 +24,31 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="Path to ONNX model.",
     )
-
-    parser.add_argument(
-        "--width",
-        type=int,
-        required=True,
-        help="width of input image.",
-    )
-
-    parser.add_argument(
-        "--height",
-        type=int,
-        required=True,
-        help="height of input image.",
-    )
     
     return parser.parse_args()
 
 
-def infer(left: str, right: str, model: str, width: int, height: int):
+def infer(left: str, right: str, model: str):
+    session = InferenceSession(path_or_bytes=model, providers= ['AxEngineExecutionProvider', 'AXCLRTExecutionProvider'])
+    input_info = []
+    input_tensors = session.get_inputs()
+    for tensor in input_tensors:
+        info = dict(name=tensor.name , type=tensor.dtype, shape=tensor.shape)
+        input_info.append(info)
+
+    H,W = input_info[0]['shape'][1:3]
+    print("input_info",input_info)
+    # del session                         # bug in axengine
+    # W=640
+    # H=256
+    print("H,W",H,W)
     
-    W = width
-    H = height
     left_raw = cv2.imread(left)
     image_left = cv2.cvtColor(left_raw, cv2.COLOR_BGR2RGB) 
     orig_h_left, orig_w_left = image_left.shape[:2]
     image_left = cv2.resize(image_left, (W,H) )
     image_left = image_left[None]
-
+   
     right_raw = cv2.imread(right)
     image_right = cv2.cvtColor(right_raw, cv2.COLOR_BGR2RGB) 
     orig_h_right, orig_w_right = image_right.shape[:2]
@@ -62,7 +59,13 @@ def infer(left: str, right: str, model: str, width: int, height: int):
 
     session = InferenceSession(path_or_bytes=model, providers= ['AxEngineExecutionProvider', 'AXCLRTExecutionProvider'])
     
-    flow_up = session.run(output_names=["output"], input_feed={"x1":image_left, "x2":image_right})[0]
+    # for i in range(1):
+    flow_up = session.run(output_names=["output"], input_feed={input_info[0]['name']:image_left, input_info[1]['name']:image_right})[0]
+
+    # flow_up = session.run(output_names=["output"], input_feed={"x1":image_left, "x2":image_right})[0]
+
+    # cannot call session twice
+    flow_up = session.run(output_names=["output"], input_feed={input_info[0]['name']:image_left, input_info[1]['name']:image_right})[0]
 
     flow_up = cv2.resize(flow_up[0,0], (orig_w_left, orig_h_left))
     flow_up *= orig_w_left/W

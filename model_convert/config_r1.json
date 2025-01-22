@@ -225,17 +225,9 @@
         "data_type": "U16"
       },
       {
-        "layer_name": "/",
+        "layer_name": "/Pad",
         "data_type": "U16"
-      },
-      {
-        "layer_name": "/",
-        "data_type": "U16"
-      },
-      {
-        "layer_name": "/",
-        "data_type": "U16"
-      },
+      }
     ]
   },
   "input_processors": [

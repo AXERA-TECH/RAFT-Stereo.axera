@@ -56,6 +56,7 @@ python3 infer_onnx.py --left examples/left/000051_11.png --right examples/right/
 ```
 cd python
 python3 infer_onnx.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model ../models/raft_steoro256x640_r1.onnx
+python3 infer.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model ../raft_steoro256x640_r1.axmodel
 ```
 
 输出结果
