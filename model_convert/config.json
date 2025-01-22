@@ -1,0 +1,54 @@
+{
+  "model_type": "ONNX",
+  "npu_mode": "NPU3",
+  "quant": {
+    "input_configs": [
+      {
+        "tensor_name": "x1",
+        "calibration_dataset": "calib-left.tar",
+        "calibration_size": 256,
+        "calibration_mean": [0, 0 , 0 ],
+        "calibration_std": [1.0, 1.0 , 1.0],
+        "calibration_format": "Image"
+      },
+      {
+        "tensor_name": "x2",
+        "calibration_dataset": "calib-right.tar",
+        "calibration_size": 256,
+        "calibration_mean": [0, 0 , 0 ],
+        "calibration_std": [1.0, 1.0 , 1.0],
+        "calibration_format": "Image"
+      }
+    ],
+    "calibration_method": "Percentile",
+    "precision_analysis": true, 
+    "precision_analysis_method": "PerLayer"
+  },
+  "input_processors": [
+    {
+      "tensor_name": "x1",
+      "tensor_format": "BGR",
+      "src_format": "BGR",
+      "src_dtype": "U8",
+      "src_layout": "NHWC",
+      "csc_mode": "NoCSC",
+      "mean": [0, 0 , 0 ],
+      "std": [1.0, 1.0 , 1.0]
+    },
+    {
+      "tensor_name": "x2",
+      "tensor_format": "BGR",
+      "src_format": "BGR",
+      "src_dtype": "U8",
+      "src_layout": "NHWC",
+      "csc_mode": "NoCSC",
+      "mean": [0, 0 , 0 ],
+      "std": [1.0, 1.0 , 1.0]
+    }
+
+  ],
+  
+  "compiler": {
+    "npu_perf":true
+  }
+}
