@@ -230,6 +230,7 @@
       }
     ]
   },
+  
   "input_processors": [
     {
       "tensor_name": "x1",
