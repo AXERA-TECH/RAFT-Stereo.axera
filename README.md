@@ -51,41 +51,63 @@ export PATH=$PATH:/opt/site-packages/local/bin
 cd python
 python3 infer_onnx.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model ../models/raft_steoro384x1280_r4.onnx
 ```
+输出结果：  
+![output](asserts/output-onnx-r4.png)
 或
 
 ```
 cd python
 python3 infer_onnx.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model ../models/raft_steoro256x640_r1.onnx
-python3 infer.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model ../raft_steoro256x640_r1.axmodel
+
 ```
 
-输出结果
-![output](asserts/output-onnx.png)
+输出结果:  
+![output](asserts/output-onnx-r1.png)
+
+运行参数说明:  
+| 参数名称 | 说明  |
+| --- | --- | 
+| --left | 输入左目图片路径 |  
+| --right | 输入左目图片路径 |  
+| --model | onnx模型路径 | 
 
 ##### 基于AXEngine运行  
 在开发板上运行命令
 
 ```
 cd python  
-python3 infer.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model /data/lihongjie/RAFT-Stereo.axera/model_convert/build-output/raft_steoro256x640.axmodel --width 640 --height 256
+python3 infer.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model ../models/raft_steoro384x1280_r4.axmodel  --width 1280 --height 384
 ```  
-输出结果
-![output](asserts/output-ax.png)
+输出结果:  
+![output](asserts/output-ax-r4.png)
 
+或
+
+```
+cd python  
+python3 infer.py --left examples/left/000051_11.png --right examples/right/000051_11.png --model ../raft_steoro256x640_r1.axmodel  --width 640 --height 256
+```  
+输出结果:  
+![output](asserts/output-ax-r1.png)
+
+可以看出来这个模型对量化还是比较敏感的。  
 
 运行参数说明:  
 | 参数名称 | 说明  |
 | --- | --- | 
-| --img | 输入图片路径 | 
-| --model | 模型路径 | 
-
+| --left | 输入左目图片路径 |  
+| --right | 输入左目图片路径 |  
+| --model | axmodel模型路径 | 
+| --width | 输入模型的图片宽度，注意不是图片原始宽度 |  
+| --height| 输入模型的图片高度，注意不是图片原始宽度 |
 ### Latency
 
 #### AX650N
 
 | model | latency(ms) |
 |---|---|
-|depth_anyting_v2_vits|33.1|
+|raft_steoro256x640_r1.axmodel | 20.9|
+|raft_steoro384x1280_r4.axmodel | 111.8|
 
 
 #### AX630C
